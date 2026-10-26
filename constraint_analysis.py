@@ -1,5 +1,4 @@
 import numpy as np;
-import matplotlib.pyplot as plt
 from constraint_figure import constraintDiagram
 
 # Constants
@@ -47,30 +46,20 @@ def TW_climb_angle(AR, climb_dist, altitude):
     gamma = np.arctan(altitude / climb_dist)
     return np.sin(gamma) + np.sqrt(4 * k * CD_min)
 
+# Set AR and sweep W/S
 AR = 5.0
 WS = np.linspace(0.5,4.0,num=351, endpoint=True)
 
+# Get T/W constraints
 TW_cruise_vals = TW_cruise(WS,AR,cruise_speed)
 TW_g = TW_ground(WS,ground_roll)
 TW_climb = TW_climb_angle(AR,climb_hdist,altitude)
 TW_turn_vals = TW_levelturn(WS,AR,cruise_speed, turn_radius)
+
+# Get upper W/S stall limit
 WS_s = WS_stall(stall_max)
 
 constraintDiagram(TW_cruise_vals, TW_turn_vals, TW_g, TW_climb, WS, WS_s, AR)
-
-
-# plt.plot(WS, TW_cruise_vals, label="Cruise at 80 ft/s")
-# plt.plot(WS, TW_turn_vals, label="Turning (R = 100 ft)")
-# plt.plot(WS, TW_g, label="Ground Roll (100 ft)")
-# plt.axvline(x=WS_s, color='red', label='Max Stall Line')
-# plt.axhline(y=TW_climb, color='red', label="Climb Angle" )
-# plt.ylabel("Thrust to Weight Ratio (T/W)")
-# plt.xlabel("Wing Loading (W/S; lb/ft^2)")
-# plt.plot(3.1,0.4, 'rd', label="Design Point")
-# plt.title(f"T/W and Wingloading Constraint Diagram (AR = {AR})")
-# plt.legend()
-# plt.show()
-
 
 
 
